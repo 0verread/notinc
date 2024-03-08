@@ -17,58 +17,27 @@
     default: "",\
     )
 
-
-void get_type(va_list args, int n){
-  //  va_start(args, n);
-    //for(int i=0; i<n; i++){
-     //   var_arg(args, int);
-    //}
-    //char *type = get_arg_type(var_arg(args, int));
-   // va_end(args)
-}
-
+void bprint(const char*, ...);
 // Variadic Function in C
 void bprint(const char *msg, ...) {
    char *msgcpy = msg;
-
    va_list args;
+   va_start(args);
+   int count = 0;
+   printf("count : %d\n", count);
+   va_end(args);
 
-   while(*msgcpy != '\0'){
-       if(*msgcpy == '{'){
-            msgcpy++;
-            int ind = *msgcpy - '0';
-            va_start(args, ind);
-            for(int i=0; i<ind; i++){
-                va_arg(args, int);
-            }
-            char *dtype = va_arg(args, int);
-            printf("%s\n", *dtype);
-
-       }
-   }
-
-    printf("%s\n", msgcpy);
-
-
-
-    va_start(args, 0);
-    for(int i=0; i<0; i++){
-        va_arg(args, int);
-    }
-
-    printf("%d\n", va_arg(args, int));
-    va_end(args);
-    va_start(args, msg);
-    int done = vfprintf(stdout, msg, args);
-    va_end(args);
+   va_start(args, msg);
+   int done = vfprintf(stdout, msg, args);
+   va_end(args);
 }
 
-
-
+// example/testing part
 int main(){
-    char testmsg[] = "they are stuff age %d\n";
-    bprint(testmsg, 10, 20);
-    return 0;
+    char *testmsg = "they are stuff age {0}\n";
+    printf("testmsg:%s", testmsg);
+    bprint(testmsg, 10, 20);// they are studd age 10
+    return 1;
 }
 
 
