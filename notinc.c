@@ -18,13 +18,35 @@
     )
 
 void bprint(const char*, ...);
+
 // Variadic Function in C
 void bprint(const char *msg, ...) {
    char *msgcpy = msg;
+
+   // Approach 3: get the highest number from list {} of msg string. say hn = 5
+   // look for elements until 5
    va_list args;
-   va_start(args);
-   int count = 0;
-   printf("count : %d\n", count);
+   va_start(args, msg);
+   int highestNumber = -1;
+   int currentNumber = 0;
+   int isBraces = 0;
+   int i=0;
+   while(msgcpy[i] != '\0'){
+       if(msgcpy[i] == '{'){
+          isBraces = 1;
+          currentNumber = 0;
+       }else if(msgcpy[i] == '}'){
+          isBraces = 0;
+          if(currentNumber > highestNumber){
+               highestNumber = currentNumber;
+          }
+       }else if(isBraces==1 && msgcpy[i] >= '0' && msgcpy[i] <='9'){
+          currentNumber = currentNumber * 10 + (msgcpy[i] - '0');
+       }
+       i++;
+   }
+
+   printf("count: %d\n", highestNumber);
    va_end(args);
 
    va_start(args, msg);
@@ -34,8 +56,8 @@ void bprint(const char *msg, ...) {
 
 // example/testing part
 int main(){
-    char *testmsg = "they are stuff age {0}\n";
-    printf("testmsg:%s", testmsg);
+    char *testmsg = "they are stuff age {0} {1} {10} {9} something {3}\n";
+    printf("testmsg:%s\n", testmsg);
     bprint(testmsg, 10, 20);// they are studd age 10
     return 1;
 }
