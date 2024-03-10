@@ -9,57 +9,62 @@
 // 2. it should handle the var type and print the log message
 // e.g. brpint("make something {0} to people who {1}", a,b);
 // 0 represtes a; 1 represts b index of arr [a, b]
-//
 
-#define get_arg_type(x) _Generic((x),\
-    int: "%d",\
-    char*: "%c",\
-    default: "",\
-    )
+#define typename(X) _Generic((X),   \
+                            int:    'd',  \
+                            char:   'c',   \
+                            char*:  's',   \
+                            float:  'f'    \
+                            );
 
-void bprint(const char*, ...);
+
+void bprint(char*, ...);
 
 // Variadic Function in C
-void bprint(const char *msg, ...) {
-   char *msgcpy = msg;
+void bprint(char *msg, ...) {
+   char msgcpy[strlen(msg)];
 
    // Approach 3: get the highest number from list {} of msg string. say hn = 5
    // look for elements until 5
    va_list args;
+
    va_start(args, msg);
    int highestNumber = -1;
    int currentNumber = 0;
    int isBraces = 0;
    int i=0;
-   while(msgcpy[i] != '\0'){
-       if(msgcpy[i] == '{'){
+   while(msg[i] != '\0'){
+       char currentChar = msg[i];
+       if(msg[i] == '{'){
           isBraces = 1;
-          currentNumber = 0;
-       }else if(msgcpy[i] == '}'){
+          currentChar = '%';
+       }else if(msg[i] == '}'){
           isBraces = 0;
-          if(currentNumber > highestNumber){
-               highestNumber = currentNumber;
+          currentChar = ' ';
+       }else if(isBraces==1 && msg[i] >= '0' && msg[i] <='9'){
+          currentNumber = currentNumber * 10 + (msg[i] - '0');
+          for(int i=0; i<=currentNumber; i++){
+            char atype = typename(va_arg(args, int));
+            currentChar = atype;
           }
-       }else if(isBraces==1 && msgcpy[i] >= '0' && msgcpy[i] <='9'){
-          currentNumber = currentNumber * 10 + (msgcpy[i] - '0');
        }
+       msgcpy[i] = currentChar;
        i++;
    }
 
-   printf("count: %d\n", highestNumber);
    va_end(args);
 
-   va_start(args, msg);
-   int done = vfprintf(stdout, msg, args);
+   char *logmsg = msgcpy;
+
+   va_start(args, logmsg);
+   int done = vfprintf(stdout, logmsg, args);
    va_end(args);
 }
 
 // example/testing part
 int main(){
-    char *testmsg = "they are stuff age {0} {1} {10} {9} something {3}\n";
-    printf("testmsg:%s\n", testmsg);
-    bprint(testmsg, 10, 20);// they are studd age 10
-    return 1;
+    bprint("this is ten: {0} and twelve: {3}\n", 10, 12, 13, 14);// they are studd age 10
+    return 0;
 }
 
 
