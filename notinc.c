@@ -18,6 +18,7 @@
                             );
 
 
+#include "notinc.h"
 
 void bprint(char *msg, ...) {
    char msgcpy[strlen(msg)];
