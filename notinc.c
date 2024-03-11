@@ -18,14 +18,10 @@
                             );
 
 
-void bprint(char*, ...);
 
-// Variadic Function in C
 void bprint(char *msg, ...) {
    char msgcpy[strlen(msg)];
 
-   // Approach 3: get the highest number from list {} of msg string. say hn = 5
-   // look for elements until 5
    va_list args;
 
    va_start(args, msg);
@@ -61,10 +57,5 @@ void bprint(char *msg, ...) {
    va_end(args);
 }
 
-// example/testing part
-int main(){
-    bprint("this is ten: {0} and twelve: {3}\n", 10, 12, 13, 14);// they are studd age 10
-    return 0;
-}
 
 

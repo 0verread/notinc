@@ -1,8 +1,5 @@
 CC = gcc
 
-notinc: notinc.c
-	${CC} notinc.c -o notinc && ./notinc
-
-
-
+notinc: notinc_test.c
+	${CC} notinc_test.c -o notinc_test && ./notinc_test
 
