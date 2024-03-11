@@ -1,6 +1,6 @@
 #include<stdio.h>
 
-#include "notinc.h"
+#include "src/notinc.h"
 
 int main(){
     bprint("test bprint {0}\n", 10);
